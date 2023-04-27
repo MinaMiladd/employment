@@ -9,7 +9,7 @@ const util = require("util"); // helper
 
 // Select All Requests
 router.get("/get-requests", admin, (req, res) => {
-    const sqlGet = "SELECT * FROM user_request";
+    const sqlGet = "SELECT * FROM user_request WHERE status='Pending'";
     conn.query(sqlGet, (error, result) => {
         res.send(result);
     });
@@ -19,6 +19,15 @@ router.get("/get-requests", admin, (req, res) => {
 router.get("/get-history-requests", admin, (req, res) => {
     const sqlGet = "SELECT * FROM user_request WHERE status='Accepted' or status = 'Rejected'";
     conn.query(sqlGet, (error, result) => {
+        res.send(result);
+    });
+});
+
+// Select History Requests of spacific applicant
+router.get("/get-history-requests/:user_id", admin, (req, res) => {
+    const { user_id } = req.params;
+    const sqlGet = "SELECT * FROM user_request WHERE user_id = ?";
+    conn.query(sqlGet, user_id, (error, result) => {
         res.send(result);
     });
 });
