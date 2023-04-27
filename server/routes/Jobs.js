@@ -32,7 +32,7 @@ router.post("", admin,
                 qualifications: req.body.qualifications,
             };
 
-            //3- INSERT JO INTO DB
+            //3- INSERT JOb INTO DB
             const query = util.promisify(conn.query).bind(conn);
             await query("insert into jobs set ?", job);
             res.status(200).json({
@@ -146,6 +146,7 @@ router.get("", async (req, res) => {
         or qualifications LIKE '%${req.query.search}%'`;
     }
     const jobs = await query(`select * from jobs ${search}`)
+
     res.status(200).json(jobs);
 });
 
@@ -171,7 +172,7 @@ router.get("/:id", async (req, res) => {
 router.post("/request",
     authorized,
     body("job_id").isNumeric().withMessage("Please Enter A Valid Job ID"),
-    body("request").isBoolean(),
+
     async (req, res) => {
         try {
             const query = util.promisify(conn.query).bind(conn);
@@ -196,7 +197,7 @@ router.post("/request",
             const requestObj = {
                 user_id: res.locals.user.id,
                 job_id: job[0].id,
-                request: req.body.request
+
             };
             // 4- INSERT JOB OBJECT INTO DB
             await query("insert into user_request set ?", requestObj);
