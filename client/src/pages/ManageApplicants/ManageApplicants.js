@@ -1,12 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Table from 'react-bootstrap/Table';
-import '../../css/ManageJobs.css';
+// import '../../css/Manageusers.css';
 import { Link } from "react-router-dom";
-import Alert from 'react-bootstrap/Alert';
+// import Alert from 'react-bootstrap/Alert';
+import axios from 'axios';
+import {getAuthUser} from '../../helper/Storage';
 
 
 
 const ManageApplicants = () => {
+  const auth = getAuthUser();
+  const [users , setUsers] = useState ({
+    loading : true ,
+    results : [],
+    error : null,
+    reload : 0
+   });
+   useEffect( () => {
+    setUsers({...users, loading : true});
+   axios 
+   .get("http://localhost:4000/applicant")
+   .then(resp => {
+    console.log(resp);
+    setUsers({...users, results : resp.data, loading : false , err : null});
+  
+   })
+   .catch(err => {
+    setUsers({...users, loading : false, err : "something went wrong"});
+  
+   });
+  },
+  [users.reload]
+  );
+
+ 
+  
+
+  const deleteApplicant = (id) => {
+    axios 
+   .delete("http://localhost:4000/applicant/" + id,{
+    headers : {
+      token : auth.token,
+    }
+   })
+   .then(resp => {
+    setUsers({...users, reload : users.reload + 1})  
+  
+   })
+   .catch(err => {
+   
+  
+   });
+  }
+
+
+
+
+
     return(
         <div className="manage-job p-5">
          <div className="header d-flex justify-content-between mb-5">
@@ -14,98 +64,49 @@ const ManageApplicants = () => {
          <Link  className='btn btn-success' to={`add`}>Add New Applicant +</Link>
          </div> 
           
-
+{/* 
    <Alert variant="danger" className='p-2'>
      This is an alert—check it out!
    </Alert>
    <Alert variant="success" className='p-2'>
      This is an alert—check it out!
-   </Alert>
+   </Alert> */}
            
  <Table striped bordered hover >
  <thead>
    <tr>
-     <th>#</th>
+     <th>id</th>
      <th>Email</th>
-     <th>Password</th>
+     
      <th>Phone</th>
      <th>Status</th>
-     <th>token</th>
+   
      <th>type</th>
      <th>Action</th>
    </tr>
  </thead>
  <tbody>
+ {
+    users.results.map(auth => (    
    <tr>
-     <td>1</td>
-     <td>mina@gmail.com</td>
-     <td> Password example</td>
-     <td> 0123456789</td>
-     <td> active or in-active</td>
-     <td> token example</td>
-     <th>Admin or Applicant</th>
-     <td>
-
-       <Link to={'5'}  className="btn btn-sm btn-primary ">Update</Link>
-       <Link to={'/5'} className="btn btn-sm btn-info mx-2">List</Link>
-       <bottun className="btn btn-sm btn-danger">Delete</bottun>
-       
-       
-     </td>
-   </tr>
-
-   <tr>
-     <td>1</td>
-     <td>mina@gmail.com</td>
-     <td> Password example</td>
-     <td> 0123456789</td>
-     <td> active or in-active</td>
-     <td> token example</td>
-     <th>Admin or Applicant</th>
-     <td>
-
-       <Link to={'5'}  className="btn btn-sm btn-primary ">Update</Link>
-       <Link to={'/5'} className="btn btn-sm btn-info mx-2">List</Link>
-       <bottun className="btn btn-sm btn-danger">Delete</bottun>
-       
-       
-     </td>
-   </tr>
-   <tr>
-     <td>1</td>
-     <td>mina@gmail.com</td>
-     <td> Password example</td>
-     <td> 0123456789</td>
-     <td> active or in-active</td>
-     <td> token example</td>
-     <th>Admin or Applicant</th>
-     <td>
-
-       <Link to={'5'}  className="btn btn-sm btn-primary ">Update</Link>
-       <Link to={'/5'} className="btn btn-sm btn-info mx-2">List</Link>
-       <bottun className="btn btn-sm btn-danger">Delete</bottun>
-       
-       
-     </td>
-   </tr>
-   <tr>
-     <td>1</td>
-     <td>mina@gmail.com</td>
-     <td> Password example</td>
-     <td> 0123456789</td>
-     <td> active or in-active</td>
-     <td> token example</td>
-     <th>Admin or Applicant</th>
-     <td>
-
-       <Link to={'5'}  className="btn btn-sm btn-primary ">Update</Link>
-       <Link to={'/5'} className="btn btn-sm btn-info mx-2">List</Link>
-       <bottun className="btn btn-sm btn-danger">Delete</bottun>
-       
-       
-     </td>
-   </tr>
-
+   <td>{auth.id}</td>
+   <td>{auth.email}</td>
+  
+   <td> {auth.phone}</td>
+   <td> {auth.status}</td>
+   <td>{auth.type}</td>
+    
+            <td>
+  
+              <Link to={auth.id}  className="btn btn-sm btn-primary  mx-2" >Update</Link>
+              {/* <Link to={'/'+ auth.id} className="btn btn-sm btn-info mx-2">List</Link> */}
+              <bottun className="btn btn-sm btn-danger" onClick = {(e) => {deleteApplicant(auth.id)}}>Delete</bottun>
+              
+              
+            </td>
+          </tr>
+          ))
+        }
    
 
   

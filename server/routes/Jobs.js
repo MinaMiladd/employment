@@ -18,10 +18,10 @@ router.post("", admin,
     async (req, res) => {
         try {
             //1- VALIDATION REQUEST [MANUAL, EXPRESS VALIDATION]
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+            // const errors = validationResult(req);
+            // if (!errors.isEmpty()) {
+            //     return res.status(400).json({ errors: errors.array() });
+            // }
 
             //2- PREPARE JOB OBJECT
             const job = {
@@ -139,7 +139,7 @@ router.delete("/:id",//PARAMS
 router.get("", async (req, res) => {
 
     const query = util.promisify(conn.query).bind(conn);
-    let search = ""
+    var search = ""
     if (req.query.search) {
         search = `where position LIKE '%${req.query.search}%' 
         or description LIKE '%${req.query.search}%' 
@@ -210,4 +210,19 @@ router.post("/request",
             res.status(500).json(err);
         }
     });
+
+    // search function
+    router.post("/search", (req, resp) => {
+        console.log(req.body);
+        
+        const sql = "INSERT INTO history_research( key_word, user_id) VALUES (?)";
+        const values = [[
+          req.body.key_word,
+          req.body.user_id ,
+
+           ]];
+           connection.query(sql,values);
+        });
+
+
 module.exports = router;

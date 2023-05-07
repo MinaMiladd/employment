@@ -52,7 +52,7 @@ router.post("/login",
             }
             res.json("Hii");
         } catch (err) {
-            res.status(500).json({ err: err });
+           // res.status(500).json({ err: err });
         }
     })
 
@@ -103,7 +103,7 @@ router.post("/register",
             delete userData.password;
             res.status(200).json(userData);
         } catch (err) {
-            res.status(500).json({ err: err });
+           // res.status(500).json({ err: err });
         }
     })
 module.exports = router;

@@ -9,7 +9,7 @@ const util = require("util"); // helper
 
 // Select All Requests
 router.get("/get-requests", admin, (req, res) => {
-    const sqlGet = "SELECT * FROM user_request";
+    const sqlGet = "SELECT * FROM user_request WHERE status='Pending'";
     conn.query(sqlGet, (error, result) => {
         res.send(result);
     });

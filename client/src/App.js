@@ -1,6 +1,6 @@
 import './App.css';
 import Header from './shared/Header';
-import Footer from './shared/Footer';
+// import Footer from './shared/Footer';
 import { Outlet } from 'react-router-dom';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <Header />
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
