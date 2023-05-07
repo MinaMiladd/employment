@@ -55,7 +55,7 @@ router.post("/login",
             res.status(500).json({ err: err });
         }
     })
-
+ 
 
 //REGISTRATION
 
