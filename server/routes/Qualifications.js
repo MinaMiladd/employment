@@ -118,4 +118,37 @@ router.delete("/:id",//PARAMS
 );
 
 
+
+// SHOW QALIFICATION  --> [ADMIN, USER]
+router.get("/:id", async (req, res) => {
+
+    const query = util.promisify(conn.query).bind(conn);
+    const qual = await query("select * from qualifications where id = ?", [
+        req.params.id,
+    ]);
+
+    if (!qual[0]) {
+        res.status(404).json({
+            msg: "qualification Not Found",
+        });
+    }
+
+    res.status(200).json(qual[0]);
+});
+
+
+// LIST, SEARCH --> [ADMIN, USER]
+router.get("", async (req, res) => {
+
+    const query = util.promisify(conn.query).bind(conn);
+    let search = ""
+    if (req.query.search) {
+        search = `where description LIKE '%${req.query.search}%'`;
+    }
+    const qual = await query(`select * from qualifications ${search}`)
+    res.status(200).json(qual);
+});
+
+
+
 module.exports = router;

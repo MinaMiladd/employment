@@ -23,6 +23,15 @@ router.get("/get-history-requests", admin, (req, res) => {
     });
 });
 
+// Select History Requests of spacific applicant
+router.get("/get-history-requests/:user_id", admin, (req, res) => {
+    const { user_id } = req.params;
+    const sqlGet = "SELECT * FROM user_request WHERE user_id = ?";
+    conn.query(sqlGet, user_id, (error, result) => {
+        res.send(result);
+    });
+});
+
 
 // Accept a Request
 router.put("/accept-request/:id", admin, (req, res) => {
