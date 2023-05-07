@@ -6,8 +6,8 @@ const SendRequest = () => {
     return(
          <div className="send-request-container">
             <Button className='btn btn-dark w-50' variant="primary" type="submit">
-        SendRequest
-      </Button>
+               SendRequest
+            </Button>
       
                 
          </div>

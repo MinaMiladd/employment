@@ -1,45 +1,140 @@
-import React from 'react';
-import '../../css/JobDetails.css';
-import SendRequest from '../../components/SendRequest';
-import JobReview from '../../components/JobReview';
-
+import React, { useEffect, useState } from "react";
+import "../../css/JobDetails.css";
+import Button from 'react-bootstrap/Button';
+import JobReview from "../../components/JobReview";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import Spinner from "react-bootstrap/Spinner";
+import Alert from 'react-bootstrap/Alert';
+import {getAuthUser} from "../../helper/Storage";
 
 const JobDetails = () => {
-    return(
-      <div className='job-details-container p-5'>
-        {/* Details of Job */}
-         <div className='row'>
-             <div className='col-3'>
-              <img className='job-image' src="https://picsum.photos/200/300"  alt=''/>
+  let { id } = useParams();
 
-             </div>
-             <div className='col-9'>
-              <h3>Job Tittle</h3>
-              <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:
+  const auth = getAuthUser();
 
-              </p>
+  const [job, setJob] = useState({
+    loading: true,
+    result: null,
+    error: null,
+    reload : 0
+  });
 
-             </div>
+  // sendRequest
+  const [request, setRequest] = useState({
+    request: "",
+    loading: false,
+    error: null,
+  });
+
+
+  useEffect(() => {
+    setJob({ ...job, loading: true });
+    axios
+      .get("http://localhost:4000/jobs/" + id)
+      .then((resp) => {
+        setJob({
+          ...job,
+          result: resp.data,
+          loading: false,
+          err: null,
+        });
+      })
+
+      .catch((err) => {
+        setJob({
+          ...job,
+          loading: false,
+          err: "something went wrong",
+        });
+      });
+  }, [job.reload]);
+
+  const sendRequest = (e) => {
+       e.preventDefault();
+       setRequest({ ...request, loading: true });
+
+  axios.post("http://localhost:4000/jobs/request", {
+  user_id: auth.id,
+  job_id: id,
+ 
+},{
+  headers : {
+    token: auth.token,
+  },
+})
+.then((resp) => {
+  setRequest({ ...request, loading: false });
+  setJob({...job, reload: job.reload + 1})
+
+ 
+ 
+}).catch((errors) => {
+  setRequest({ ...request, loading: true });
+
+ 
+});
+  }
+
+  return (
+    <div className="job-details-container p-5">
+      {/*Loader */}
+      {job.loading === true && (
+        <div className="text-center">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      )}
+
+      {job.loading === false && job.err == null && (
+        <>
+          {/* Details of Job */}
+          <div className="row">
+            <div className="col-3"></div>
+            <div className="col-12">
+              <h3>{job.result.position}</h3>
+              <p></p>
+            </div>
+          </div>
+
+
+          {/*Job Review */}
+          <hr />
+          <JobReview />
+          </>
+      )}
+
+
+      {/*Send Request for job */}
+      <div className="send-request-container">
+            <Button className='btn btn-dark w-50' variant="primary" type="submit" onClick={sendRequest}>
+               SendRequest
+            </Button>
+      
+                
          </div>
 
-
-        {/*Job Review */}
-        <hr />
-        <JobReview />
-        {/*
-        <JobReview />
-        <JobReview />
-        <JobReview />
-         */}
+      {/*Error Handling */}
+            {
+            job.loading === false && job.err != null && (     
+              <Alert variant="danger" className='p-2'>
+            {job.err}
+               </Alert>
+            )}
 
 
-         
-        {/*Send Request for job */}
-        <SendRequest />
-        
+            {!auth && (     
+              <Alert variant="warning" className='p-2'>
+                  please check your profile and then send Request
+               </Alert>
+            )}
 
-      </div>
-    );
+           
+
+
+    </div>
+  );
 };
 
 export default JobDetails;

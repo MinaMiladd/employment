@@ -30,7 +30,12 @@ import UpdateQualifications from "./pages/ManageQualifications/UpdateQualificati
 /*import Requests files */
 import ManageRequests from "./pages/ManageReqeusts/ManageRequests";
 import ShowHistory from "./pages/ManageReqeusts/ShowHistory";
- 
+import ShowHistoryOfApp from "./pages/ManageReqeusts/ShowHistoryOfApplicant";
+
+// import Middleware files
+import Guest from "./middleware/Guest";
+import Admin from "./middleware/Admin";
+
 
  export const routes = createBrowserRouter([
 
@@ -48,21 +53,30 @@ import ShowHistory from "./pages/ManageReqeusts/ShowHistory";
         path: ":id",
         element: <JobDetails />,
       },
+       
+      // Guest Middleware
+      {
+        element : <Guest />,
+        children : [
+          {
+            path :"/login",
+            element : <Login />,
+        },
+        
+        {
+            path : "/register",
+            element : <Register />,
+        },
+      
 
+        ]
+      },
 
   
-  {
-      path :"/login",
-      element : <Login />,
-  },
   
-  {
-      path : "/register",
-      element : <Register />,
-  },
-
   {
     path : "/manage-jobs",
+    element : <Admin />,
     children : [
       {
          path :'',
@@ -86,6 +100,7 @@ import ShowHistory from "./pages/ManageReqeusts/ShowHistory";
 
 {
   path : "/manage-applicants",
+  element : <Admin />,
   children : [
     {
        path :'',
@@ -107,6 +122,7 @@ import ShowHistory from "./pages/ManageReqeusts/ShowHistory";
 },
 {
   path : "/manage-qualifications",
+  element : <Admin />,
   children : [
     {
        path :'',
@@ -129,6 +145,7 @@ import ShowHistory from "./pages/ManageReqeusts/ShowHistory";
 
 {
   path: "/manage-requests",
+  element : <Admin />,
   children: [
     {
       path :'',
@@ -137,6 +154,10 @@ import ShowHistory from "./pages/ManageReqeusts/ShowHistory";
     {
       path :'show',
       element : <ShowHistory />,
+    },
+    {
+      path :'show-history',
+      element : <ShowHistoryOfApp />,
     },
     
   ]
