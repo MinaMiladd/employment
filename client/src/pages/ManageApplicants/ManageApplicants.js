@@ -98,7 +98,7 @@ const ManageApplicants = () => {
     
             <td>
   
-              <Link to={auth.id}  className="btn btn-sm btn-primary  mx-2" >Update</Link>
+              <Link to={'auth.id'}  className="btn btn-sm btn-primary  mx-2" >Update</Link>
               {/* <Link to={'/'+ auth.id} className="btn btn-sm btn-info mx-2">List</Link> */}
               <bottun className="btn btn-sm btn-danger" onClick = {(e) => {deleteApplicant(auth.id)}}>Delete</bottun>
               

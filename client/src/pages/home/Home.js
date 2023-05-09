@@ -5,6 +5,8 @@ import axios from 'axios';
 //import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import {getAuthUser} from "../../helper/Storage";
+import { Link } from "react-router-dom";
+
 
 
 
@@ -49,6 +51,19 @@ const searchJobs = (e) => {
   setjobs({...jobs, reload: jobs.reload +1 })
  
 
+
+
+}
+
+
+const searchKey = (user_id,search_word) => {
+  if (search) {
+    axios.post("http://localhost:4000/jobs/history_search", {
+      search_word,
+      user_id,
+      
+    })
+  }
 }
 
     return(
@@ -76,13 +91,15 @@ const searchJobs = (e) => {
       <Form.Group className="mb-3 d-flex">
         <Form.Control 
         type="text"
-        
+
         placeholder="Search for a job"
         className="rounded-0"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        onClick={() => searchKey(auth.id,search)}
         />
-        <button className='btn btn-dark rounded-0'> Search </button>
+        <button className='btn btn-dark rounded-0 mx-2'> Search </button>
+        <Link  className='btn btn-primary' to={`show-his`}>Show History</Link>
       </Form.Group>
       </Form>
           

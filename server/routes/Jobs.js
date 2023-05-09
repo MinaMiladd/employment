@@ -212,16 +212,25 @@ router.post("/request",
     });
 
     // search function
-    router.post("/search", (req, resp) => {
-        console.log(req.body);
+    // router.post("/search", (req, resp) => {
+    //     console.log(req.body);
         
-        const sql = "INSERT INTO history_research( key_word, user_id) VALUES (?)";
-        const values = [[
-          req.body.key_word,
-          req.body.user_id ,
+    //     const sql = "INSERT INTO history_research( search_word, user_id) VALUES (?)";
+    //     const values = [[
+    //       req.body.search_word,
+    //       req.body.user_id,
 
-           ]];
-           connection.query(sql,values);
+    //        ]];
+    //        conn.query(sql,values);
+    //     });
+
+
+        router.post("/history_search", (req, res) => {
+            const{search_word,user_id} = req.body;
+            const sql  = "INSERT INTO history_research (search_word,user_id) VALUES (?,?)";
+            conn.query(sql, [search_word,user_id] , (error, result)=>{
+               res.send(result);
+           });
         });
 
 

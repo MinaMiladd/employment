@@ -36,6 +36,8 @@ import ShowHistoryOfApp from "./pages/ManageReqeusts/ShowHistoryOfApplicant";
 import Guest from "./middleware/Guest";
 import Admin from "./middleware/Admin";
 
+import Show from "./pages/ShowHisOfUser/Show";
+
 
  export const routes = createBrowserRouter([
 
@@ -43,10 +45,17 @@ import Admin from "./middleware/Admin";
         path : "",
         element : <App />,
         children :[
+          {
+            path:"/show-his",
+            element : <Show />
+          }
+        ,
               
     {
         path: "/",
         element: <Home />,
+        
+        
       },
 
       {
