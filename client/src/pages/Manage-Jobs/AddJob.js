@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import {getAuthUser,setAuthUser} from '../../helper/Storage';
 import axios from 'axios';
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -67,6 +67,7 @@ const AddJob = () => {
       });
   };
 
+
     return(
         <div className='login-container'>
            
@@ -90,7 +91,7 @@ const AddJob = () => {
 
 
 
-    <Form onSubmit={createJob}>
+    <Form>
       <Form.Group className="mb-3" >
         <Form.Control 
        value={Job.position}

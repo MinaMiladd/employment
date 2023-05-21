@@ -69,17 +69,7 @@ const searchKey = (user_id,search_word) => {
     return(
         <div className='home-container p-5'>
 
-          {/*Loader 
-          
-           {
-            jobs.loading === true && (
-              <div className="text-center">
-                  <Spinner animation="border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                   </Spinner>
-              </div> 
-            )
-          }*/}
+       
          
            {/*List Jobs */}
           {
